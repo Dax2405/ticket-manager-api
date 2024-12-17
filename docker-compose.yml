@@ -1,0 +1,20 @@
+
+services:
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8002 ticket_manager.wsgi:application"
+    volumes:
+      - .:/app
+    ports:
+      - "8002:8002"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY="SECRET_KEY"
+      - EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+      - EMAIL_HOST=your_email_host
+      - EMAIL_PORT=587 #normally 587
+      - EMAIL_USE_TLS=True
+      - EMAIL_HOST_USER=your_email
+      - EMAIL_HOST_PASSWORD=your_password
+      - DEFAULT_FROM_EMAIL=your_email
+      - ALLOWED_HOSTS=localhost,127.0.0.1,your_ip_server_or_domain
