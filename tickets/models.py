@@ -28,3 +28,10 @@ class In_Place(models.Model):
     state = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     out_at = models.DateTimeField(null=True, blank=True)
+
+
+class Logs(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.SET_NULL, null=True)
+    place = models.ForeignKey(Place, on_delete=models.SET_NULL, null=True)
+    action = models.CharField(max_length=100)
+    time = models.DateTimeField(auto_now_add=True)
