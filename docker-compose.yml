@@ -1,12 +1,11 @@
-
 services:
   web:
     build: .
-    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8002 ticket_manager.wsgi:application"
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && gunicorn --bind 0.0.0.0:8003 ticket_manager.wsgi:application"
     volumes:
       - .:/app
     ports:
-      - "8002:8002"
+      - "8003:8003"
     environment:
       - DEBUG=False
       - SECRET_KEY="SECRET_KEY"
@@ -18,3 +17,13 @@ services:
       - EMAIL_HOST_PASSWORD=your_password
       - DEFAULT_FROM_EMAIL=your_email
       - ALLOWED_HOSTS=localhost,127.0.0.1,your_ip_server_or_domain
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8002:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./media:/app/media
+    depends_on:
+      - web
