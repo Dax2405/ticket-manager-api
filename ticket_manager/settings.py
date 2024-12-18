@@ -164,12 +164,3 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_URL = 'http://localhost:8002/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-EMAIL_BACKEND = env(
-    'EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = env('EMAIL_HOST',)
-EMAIL_PORT = env('EMAIL_PORT', default=465)
-EMAIL_USE_SSL = env('EMAIL_USE_SSL', default=True)
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
