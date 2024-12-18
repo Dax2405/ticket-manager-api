@@ -1,30 +1,20 @@
-import qrcode
-from django.core.mail import EmailMessage
-from io import BytesIO
-from django.core.files.base import ContentFile
+import requests
 
 
 def send_ticket_email(ticket):
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(ticket.id_number)
-    qr.make(fit=True)
+    url = "http://dax-ec.ru/api/enviar-email"
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = {
+        "id_number": ticket.id_number,
+        "email": ticket.email
+    }
 
-    img = qr.make_image(fill='black', back_color='white')
+    response = requests.post(url, headers=headers, json=data)
 
-    buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    qr_image = ContentFile(buffer.getvalue(), f"{ticket.id_number}.png")
-
-    email = EmailMessage(
-        'Tu Ticket',
-        f'Aquí está tu ticket con ID: {ticket.id_number}',
-        'nexalink@dax-ec.ru',
-        [ticket.email],
-    )
-    email.attach(f"{ticket.id_number}.png", buffer.getvalue(), 'image/png')
-    email.send()
+    if response.status_code == 200:
+        print("Email enviado exitosamente")
+    else:
+        print(f"Error al enviar el email: {
+              response.status_code} - {response.text}")
