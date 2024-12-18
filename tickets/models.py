@@ -19,7 +19,7 @@ class Ticket(models.Model):
     enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE)
     observations = models.TextField(blank=True, null=True)
     image = models.ImageField(
-        upload_to='tickets/images', blank=True, null=True)
+        upload_to='images', blank=True, null=True)
 
 
 class In_Place(models.Model):
